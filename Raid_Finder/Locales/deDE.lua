@@ -1,4 +1,4 @@
-local L = LibStub("AceLocale-3.0"):NewLocale("DungeonFinder", "deDE")
+local L = LibStub("AceLocale-3.0"):NewLocale("RaidFinder", "deDE")
 
 
 if (L) then

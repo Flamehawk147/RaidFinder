@@ -1,4 +1,4 @@
-local L = LibStub("AceLocale-3.0"):NewLocale("DungeonFinder", "enUS", true, true) -- Default languageprofile
+local L = LibStub("AceLocale-3.0"):NewLocale("RaidFinder", "enUS", true, true) -- Default languageprofile
 
 
 -- UI related locales

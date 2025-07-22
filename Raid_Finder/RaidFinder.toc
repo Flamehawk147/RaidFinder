@@ -28,4 +28,4 @@ events\LFGInfoEvent.lua
 events\LFMInfoEvent.lua
 Broadcast.lua
 
-DungeonFinder.lua
+RaidFinder.lua

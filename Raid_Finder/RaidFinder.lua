@@ -1,7 +1,7 @@
 -- namespace
 local _, ns = ...;
 -- imports
-local playerLocale= LibStub("AceLocale-3.0"):GetLocale("DungeonFinder")
+local playerLocale= LibStub("AceLocale-3.0"):GetLocale("RaidFinder")
 local AddonMessage= ns.AddonMessage
 local Broadcast = ns.Broadcast
 local Group= ns.Group
@@ -29,6 +29,20 @@ local CLASS_WARLOCK= "WARLOCK"
 local CLASS_DRUID= "DRUID"
 local CLASS_DEATHKNIGHT= "DEATHKNIGHT"
 
+-- Class icon texture coordinates for WotLK
+local CLASS_ICON_TCOORDS = {
+    [CLASS_WARRIOR] = {0, 0.25, 0, 0.25},
+    [CLASS_MAGE] = {0.25, 0.49609375, 0, 0.25},
+    [CLASS_ROGUE] = {0.49609375, 0.7421875, 0, 0.25},
+    [CLASS_DRUID] = {0.7421875, 0.98828125, 0, 0.25},
+    [CLASS_HUNTER] = {0, 0.25, 0.25, 0.5},
+    [CLASS_SHAMAN] = {0.25, 0.49609375, 0.25, 0.5},
+    [CLASS_PRIEST] = {0.49609375, 0.7421875, 0.25, 0.5},
+    [CLASS_WARLOCK] = {0.7421875, 0.98828125, 0.25, 0.5},
+    [CLASS_PALADIN] = {0, 0.25, 0.5, 0.75},
+    [CLASS_DEATHKNIGHT] = {0.25, 0.49609375, 0.5, 0.75}
+}
+
 local RAID_ROLES = {
     [CLASS_WARRIOR]= ROLE_TANK,
     [CLASS_PALADIN]= ROLE_HEALER,
@@ -43,7 +57,7 @@ local RAID_ROLES = {
 }
 
 -- communication
-local ADDON_CHANNEL= "DungeonFinder"
+local ADDON_CHANNEL= "RaidFinder"
 local EVENT_LFM= "DF_LFM"
 local EVENT_LFG= "DF_LFG"
 local EVENT_CANCEL= "DF_CANCEL"
@@ -52,7 +66,7 @@ local EVENT_CANCEL= "DF_CANCEL"
 local WINDOW_WIDTH = 350
 local WINDOW_HEIGHT = 450
 
-local UIFrame = CreateFrame("Frame", "DungeonFinderIU", UIParent, "UIPanelDialogTemplate")
+local UIFrame = CreateFrame("Frame", "RaidFinderUI", UIParent, "UIPanelDialogTemplate")
 UIFrame:SetAttribute("UIPanelLayout-defined", true)
 UIFrame:SetAttribute("UIPanelLayout-enabled", true)
 UIFrame:SetAttribute("UIPanelLayout-area", "left")
@@ -332,7 +346,7 @@ lfgRefreshButton:SetPoint("TOPRIGHT", lfgGroupFrame, "TOPRIGHT", -6, -6)
 lfgRefreshButton:SetScript("OnClick", function()
     Broadcast.lfg()
     PlaySound("PVPEnterQueue")
-    ns.refeshLFGFields()
+    ns.refreshLFGFields()
 end)
 
 --local refreshButtonTexture = lfgRefreshButton:CreateTexture(nil, "ARTWORK")
@@ -682,7 +696,7 @@ lfmInviteFrame:SetScript("OnShow", function()
     lfmGroupCommentLabel:SetText(ns.DB.group.comment)
 end)
 
-ns.refeshLFGFields = function()
+ns.refreshLFGFields = function()
     groupScrollList:Update()
 end
 
@@ -694,10 +708,10 @@ end
 --lfmCreateFrame:Hide()
 --lfmInviteFrame:Show()
 
-SLASH_DungeonFinder1 = "/rf"
-SLASH_DungeonFinder2 = "/raidfinder"
-SLASH_DungeonFinder3 = "/lfg"
-SlashCmdList["DungeonFinder"] = function(s)
+SLASH_RaidFinder1 = "/rf"
+SLASH_RaidFinder2 = "/raidfinder"
+SLASH_RaidFinder3 = "/lfg"
+SlashCmdList["RaidFinder"] = function(s)
 --    if (not UnitAffectingCombat("player")) then
         JoinChannelByName(ADDON_CHANNEL)
         if (UIFrame:IsShown()) then
@@ -740,4 +754,4 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2, arg3, arg4)
     end
 end)
 
-print("Addon loaded... RaidFinder "..GetAddOnMetadata("DungeonFinder", "Version"))
+print("Addon loaded... RaidFinder "..GetAddOnMetadata("RaidFinder", "Version"))

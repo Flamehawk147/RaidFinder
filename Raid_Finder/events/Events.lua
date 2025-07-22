@@ -4,7 +4,7 @@ local _, ns = ...;
 local AddonMessage = ns.AddonMessage
 
 -- the addon message prefix - not the event prefix
-local EVENT_MESSAGE = "DF_EVENT_MSG"
+local EVENT_MESSAGE = "RF_EVENT_MSG"
 
 ---
 -- Contains utility methods to send and receive event messages.
