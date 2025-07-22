@@ -29,6 +29,7 @@ L["SHAMAN"]= "SHAMAN"
 L["MAGE"]= "MAGE"
 L["WARLOCK"]= "WARLOCK"
 L["DRUID"]= "DRUID"
+L["DEATHKNIGHT"]= "DEATHKNIGHT"
 
 -- Class Role Names
 L["TANK"]= "TANK"

@@ -232,7 +232,7 @@
     </Frame>
 
     <Frame name="DungeonFinderClassFrameTemplate" virtual="true">
-        <Size x="240" y="82" />
+        <Size x="290" y="82" />
         <Frames>
             <Button parentKey="mageButton"
                 parentArray="classButtons"
@@ -392,6 +392,24 @@
                 <Attributes>
                     <Attribute name="class" type="string"
                         value="WARRIOR" />
+                </Attributes>
+            </Button>
+            <Button parentKey="deathknightButton"
+                parentArray="classButtons"
+                inherits="DungeonFinderClassButtonTemplate">
+                <Anchors>
+                    <Anchor point="LEFT"
+                        relativeKey="$parent.warriorButton"
+                        relativePoint="RIGHT" x="20" y="0" />
+                </Anchors>
+                <NormalTexture
+                    file="Interface\TargetingFrame\UI-Classes-Circles">
+                    <TexCoords left="0.25" right="0.49609375"
+                        top="0.5" bottom="0.75" />
+                </NormalTexture>
+                <Attributes>
+                    <Attribute name="class" type="string"
+                        value="DEATHKNIGHT" />
                 </Attributes>
             </Button>
         </Frames>
