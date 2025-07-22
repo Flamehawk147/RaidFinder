@@ -14,9 +14,9 @@ ns.DB = {
 }
 
 ns.loadSavedVariables = function()
-    if (DungeonFinderDB) then
+    if (RaidFinderDB) then
         -- assign the DB so that the variables are modified directly
-        ns.DB = DungeonFinderDB
+        ns.DB = RaidFinderDB
         -- restore object methods
         ns.DB.player = Player.of(ns.DB.player)
         ns.DB.group = Group.of(ns.DB.group)
@@ -28,6 +28,6 @@ ns.loadSavedVariables = function()
         end
     else
         -- initialize the DB if it was not present
-        DungeonFinderDB = ns.DB
+        RaidFinderDB = ns.DB
     end
 end

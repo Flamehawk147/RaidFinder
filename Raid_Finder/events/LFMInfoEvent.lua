@@ -64,7 +64,7 @@ ns.eventHandler[EVENT_ID] = function(message, sender)
             -- filter the message if we actually need it
             if (group:needsPlayer(ns.DB.player)) then
                 ns.DB.dungeonGroups[sender] = group
-                ns.refeshLFGFields()
+                ns.refreshLFGFields()
                 
                 if (event.response) then
                     ns.LFGInfoEvent.send(sender)

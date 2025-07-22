@@ -12,7 +12,7 @@ local _, ns = ...;
 local Broadcast = {}
 ns.Broadcast = Broadcast
 
-local ADDON_CHANNEL= "DungeonFinder"
+local ADDON_CHANNEL= "RaidFinder"
 local CMD_LFM = "!lfm"
 local CMD_LFMC = "!lfmc"
 local CMD_LFG = "!lfg"
@@ -74,7 +74,7 @@ end
 cmdHandlers[CMD_LFMC] = function(sender)
     if (ns.DB.dungeonGroups[sender]) then
         ns.DB.dungeonGroups[sender] = nil
-        ns.refeshLFGFields()
+        ns.refreshLFGFields()
     end
 end
 
