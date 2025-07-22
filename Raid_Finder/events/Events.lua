@@ -29,7 +29,15 @@ ns.eventHandler = {}
 -- the event frame where the event is registered to
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("CHAT_MSG_ADDON")
-C_ChatInfo.RegisterAddonMessagePrefix(EVENT_MESSAGE)
+-- Register addon message prefix for WotLK compatibility
+local function RegisterAddonMessagePrefix(prefix)
+    if RegisterAddonMessagePrefix then
+        RegisterAddonMessagePrefix(prefix)
+    elseif C_ChatInfo and C_ChatInfo.RegisterAddonMessagePrefix then
+        C_ChatInfo.RegisterAddonMessagePrefix(prefix)
+    end
+end
+RegisterAddonMessagePrefix(EVENT_MESSAGE)
 eventFrame:SetScript("OnEvent", function(frame, event, arg1, arg2, arg3, arg4)
     if (event == "CHAT_MSG_ADDON" and arg1 == EVENT_MESSAGE) then
         AddonMessage.Receive(arg1, arg2, arg3, arg4, function(prefix, message, type, sender)

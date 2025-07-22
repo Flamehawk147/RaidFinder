@@ -59,7 +59,7 @@ UIFrame:SetAttribute("UIPanelLayout-width", WINDOW_WIDTH)
 UIFrame:SetAttribute("UIPanelLayout-whileDead", true)
 UIFrame:SetSize(WINDOW_WIDTH, WINDOW_HEIGHT)
 UIFrame:SetPoint("CENTER")
-UIFrame.Title:SetText(playerLocale["Dungeon Finder"])
+UIFrame.Title:SetText(playerLocale["Raid Finder"])
 HideUIPanel(UIFrame)
 
 -- create tabs
@@ -87,11 +87,17 @@ local roleInset = CreateFrame("Frame", nil, lfgDungeonFrame, "InsetFrameTemplate
 roleInset:SetPoint("TOPLEFT", lfgDungeonFrame, "TOPLEFT", 0, 0)
 roleInset:SetPoint("BOTTOMRIGHT", lfgDungeonFrame, "TOPRIGHT", 0, -75)
 
+-- Role texture coordinates for WotLK compatibility
+local ROLE_TEXCOORDS = {
+    [ROLE_TANK] = {0, 0.26171875, 0.26171875, 0.5234375},
+    [ROLE_HEALER] = {0.26171875, 0.5234375, 0, 0.26171875},
+    [ROLE_DAMAGER] = {0.26171875, 0.5234375, 0.26171875, 0.5234375}
+}
+
 local tankRoleButton = CreateFrame("Button", nil, roleInset, "DungeonFinderRoleButtonTemplate")
 tankRoleButton:SetPoint("TOPLEFT", lfgDungeonFrame, "TOPLEFT", 60, -15)
 tankRoleButton.role = ROLE_TANK
---tankRoleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole(ROLE_TANK))
-tankRoleButton:GetNormalTexture():SetTexCoord(GetTexCoordsForRole(ROLE_TANK));
+tankRoleButton:GetNormalTexture():SetTexCoord(unpack(ROLE_TEXCOORDS[ROLE_TANK]));
 tankRoleButton.checkButton:SetScript("OnClick", function()
     ns.DB.player:setRole(ROLE_TANK, tankRoleButton.checkButton:GetChecked())
 end)
@@ -102,8 +108,7 @@ end)
 local healerRoleButton = CreateFrame("Button", nil, roleInset, "DungeonFinderRoleButtonTemplate")
 healerRoleButton:SetPoint("LEFT", tankRoleButton, "RIGHT", 45, 0)
 healerRoleButton.role = ROLE_HEALER
---healerRoleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole(ROLE_HEALER))
-healerRoleButton:GetNormalTexture():SetTexCoord(GetTexCoordsForRole(ROLE_HEALER));
+healerRoleButton:GetNormalTexture():SetTexCoord(unpack(ROLE_TEXCOORDS[ROLE_HEALER]));
 healerRoleButton.checkButton:SetScript("OnClick", function()
     ns.DB.player:setRole(ROLE_HEALER, healerRoleButton.checkButton:GetChecked())
 end)
@@ -114,8 +119,7 @@ end)
 local damagerRoleButton = CreateFrame("Button", nil, roleInset, "DungeonFinderRoleButtonTemplate")
 damagerRoleButton:SetPoint("LEFT", healerRoleButton, "RIGHT", 45, 0)
 damagerRoleButton.role = ROLE_DAMAGER
---damagerRoleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole(ROLE_DAMAGER))
-damagerRoleButton:GetNormalTexture():SetTexCoord(GetTexCoordsForRole(ROLE_DAMAGER));
+damagerRoleButton:GetNormalTexture():SetTexCoord(unpack(ROLE_TEXCOORDS[ROLE_DAMAGER]));
 damagerRoleButton.checkButton:SetScript("OnClick", function()
     ns.DB.player:setRole(ROLE_DAMAGER, damagerRoleButton.checkButton:GetChecked())
 end)
@@ -297,11 +301,11 @@ findGroupButton:SetNormalFontObject("GameFontNormal")
 findGroupButton:SetScript("OnClick", function()
     if (ns.DB.player:isLFGReady()) then
         Broadcast.lfg()
-        PlaySound(SOUNDKIT.PVP_ENTER_QUEUE)
+        PlaySound("PVPEnterQueue")
         lfgDungeonFrame:Hide()
         lfgGroupFrame:Show()
     else
-        PlaySound(SOUNDKIT.LFG_DENIED)
+        PlaySound("LFGDenied")
     end
 end)
 
@@ -317,7 +321,7 @@ end
 
 local lfgGroupLabel = lfgGroupFrame:CreateFontString(nil, "ARTWORK", "MailFont_Large")
 lfgGroupLabel:SetPoint("TOPLEFT", lfgGroupFrame, "TOPLEFT", 12, -15)
-lfgGroupLabel:SetText(playerLocale["Dungeon Groups"])
+lfgGroupLabel:SetText(playerLocale["Raid Groups"])
 lfgGroupLabel:SetTextColor(1, 0.82, 0)
 
 local lfgRefreshButton = CreateFrame("Button", nil, lfgGroupFrame, "DungeonFinderRefreshButtonTemplate")
@@ -325,7 +329,7 @@ lfgRefreshButton:SetSize(32, 32)
 lfgRefreshButton:SetPoint("TOPRIGHT", lfgGroupFrame, "TOPRIGHT", -6, -6)
 lfgRefreshButton:SetScript("OnClick", function()
     Broadcast.lfg()
-    PlaySound(SOUNDKIT.PVP_ENTER_QUEUE)
+    PlaySound("PVPEnterQueue")
     ns.refeshLFGFields()
 end)
 
@@ -427,7 +431,7 @@ cancelFindGroupButton:SetScript("OnClick", function()
     lfgGroupFrame:Hide()
     -- send cancel group message
     Broadcast.lfgc()
-    PlaySound(SOUNDKIT.LFG_DENIED)
+    PlaySound("LFGDenied")
 end)
 
 --{"groupfinder-icon-role-large-dps", [[Interface\LFGFrame\GroupFinder.BLP]], 29, 29, 0.6591796875, 0.6875, 0.1123046875, 0.140625, false, false},
@@ -467,7 +471,7 @@ lfmCreateGroupInset:SetPoint("BOTTOM", lfmCreateFrame, "BOTTOM", 0, 33)
 local lfmDungeonLabel = lfmCreateFrame:CreateFontString(nil, "ARTWORK")
 lfmDungeonLabel:SetPoint("TOPLEFT", lfmCreateGroupInset, "TOPLEFT", 12, -12)
 lfmDungeonLabel:SetFontObject("GameFontNormalLEFT")
-lfmDungeonLabel:SetText(playerLocale["Dungeon"])
+lfmDungeonLabel:SetText(playerLocale["Raid"])
 
 local lfmSelectDungeonDropDown = CreateFrame("Frame", nil, lfmCreateGroupInset, "UIDropDownMenuTemplate")
 lfmSelectDungeonDropDown:SetPoint("TOP", lfmDungeonLabel, "BOTTOM", 0, -6)
@@ -570,11 +574,11 @@ createGroupButton:SetScript("OnClick", function()
             roles, classes, nil, comment, nil, nil)
         -- send group info
         Broadcast.lfm()
-        PlaySound(SOUNDKIT.PVP_ENTER_QUEUE)
+        PlaySound("PVPEnterQueue")
         lfmCreateFrame:Hide()
         lfmInviteFrame:Show()
     else
-        PlaySound(SOUNDKIT.LFG_DENIED)
+        PlaySound("LFGDenied")
     end
 end)
 
@@ -606,7 +610,7 @@ lfmRefreshButton:SetPoint("TOPRIGHT", lfmInviteFrame, "TOPRIGHT", -6, -6)
 lfmRefreshButton:SetScript("OnClick", function()
     Broadcast.lfm()
     ns.refreshLFMFields()
-    PlaySound(SOUNDKIT.PVP_ENTER_QUEUE)
+    PlaySound("PVPEnterQueue")
 end)
 
 -- TODO show member count
@@ -667,7 +671,7 @@ cancelCreateGroupButton:SetScript("OnClick", function()
     lfmInviteFrame:Hide()
     -- send cancel group message
     Broadcast.lfmc()
-    PlaySound(SOUNDKIT.LFG_DENIED)
+    PlaySound("LFGDenied")
 end)
 -- update the dungeon info in the label frames
 lfmInviteFrame:SetScript("OnShow", function()
@@ -688,9 +692,9 @@ end
 --lfmCreateFrame:Hide()
 --lfmInviteFrame:Show()
 
-SLASH_DungeonFinder1 = "/lfg"
-SLASH_DungeonFinder2 = "/lfm"
-SLASH_DungeonFinder3 = "/dungeonfinder"
+SLASH_DungeonFinder1 = "/rf"
+SLASH_DungeonFinder2 = "/raidfinder"
+SLASH_DungeonFinder3 = "/lfg"
 SlashCmdList["DungeonFinder"] = function(s)
 --    if (not UnitAffectingCombat("player")) then
         JoinChannelByName(ADDON_CHANNEL)
@@ -706,9 +710,17 @@ end
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("VARIABLES_LOADED")
 --eventFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-C_ChatInfo.RegisterAddonMessagePrefix(EVENT_LFM)
-C_ChatInfo.RegisterAddonMessagePrefix(EVENT_LFG)
-C_ChatInfo.RegisterAddonMessagePrefix(EVENT_CANCEL)
+-- Register addon message prefixes for WotLK compatibility
+local function RegisterAddonMessagePrefix(prefix)
+    if RegisterAddonMessagePrefix then
+        RegisterAddonMessagePrefix(prefix)
+    elseif C_ChatInfo and C_ChatInfo.RegisterAddonMessagePrefix then
+        C_ChatInfo.RegisterAddonMessagePrefix(prefix)
+    end
+end
+RegisterAddonMessagePrefix(EVENT_LFM)
+RegisterAddonMessagePrefix(EVENT_LFG)
+RegisterAddonMessagePrefix(EVENT_CANCEL)
 eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2, arg3, arg4)
     if (event == "VARIABLES_LOADED") then
         ns.loadSavedVariables()
@@ -726,4 +738,4 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1, arg2, arg3, arg4)
     end
 end)
 
-print("Addon loaded... DungeonFinder "..GetAddOnMetadata("DungeonFinder", "Version"))
+print("Addon loaded... RaidFinder "..GetAddOnMetadata("DungeonFinder", "Version"))

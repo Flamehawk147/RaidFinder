@@ -1,11 +1,11 @@
-## Interface: 11305
-## Title: Dungeon Finder
+## Interface: 30300
+## Title: Raid Finder
 ## Version: 1.0.0
 ## Author: Ben
-## Notes: DungeonFinder Tool for World of Warcraft Classic
+## Notes: RaidFinder Tool for World of Warcraft Wrath of the Lich King
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariablesPerCharacter: DungeonFinderDB
+## SavedVariablesPerCharacter: RaidFinderDB
 
 Libs.xml
 Locales\Locales.xml
